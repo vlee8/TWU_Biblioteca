@@ -1,17 +1,18 @@
 package com.twu.biblioteca;
 
 import java.io.OutputStream;
+import java.io.PrintStream;
 
 public class BibliotecaApp {
 
-    public BibliotecaApp(OutputStream outputStream) {
-    }
+    private PrintStream outputStream;
 
-    public static void main(String[] args) {
-        System.out.println("Hello, world!");
+    public BibliotecaApp(PrintStream outputStream) {
+        this.outputStream = outputStream;
     }
 
 
     public void run() {
+        outputStream.print("Welcome!");
     }
 }
