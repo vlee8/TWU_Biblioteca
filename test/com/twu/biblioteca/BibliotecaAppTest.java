@@ -42,8 +42,6 @@ public class BibliotecaAppTest {
 
     @Test
     public void shouldListBooksWhenOptionIsSelected() throws Exception {
-        // when the user inputs "L" into the menu prompt
-        when(inputStream.ready()).thenReturn(true);
         when(inputStream.readLine())
                 .thenReturn("L")
                 .thenReturn("Q");
@@ -55,7 +53,6 @@ public class BibliotecaAppTest {
 
     @Test
     public void shouldRepeatMenuOptionsIfInputIsInvalid() throws Exception {
-        when(inputStream.ready()).thenReturn(true);
         when(inputStream.readLine())
                 .thenReturn("NotSupported")
                 .thenReturn("L")
@@ -65,11 +62,11 @@ public class BibliotecaAppTest {
 
         verify(outputStream, times(2)).println("[L]ist Books");
         verify(outputStream).println("List of Books");
+        verify(outputStream).println("Select a valid option!");
     }
 
     @Test
     public void shouldRepeatMenuOptionsIfIoExceptionIsThrown() throws Exception {
-        when(inputStream.ready()).thenReturn(true);
         when(inputStream.readLine())
                 .thenThrow(IOException.class)
                 .thenReturn("L")
@@ -89,7 +86,6 @@ public class BibliotecaAppTest {
 
     @Test
     public void shouldQuitWhenOptionIsSelected() throws Exception {
-        when(inputStream.ready()).thenReturn(true);
         when(inputStream.readLine()).thenReturn("Q");
 
         bibliotecaApp.run();
@@ -107,4 +103,5 @@ public class BibliotecaAppTest {
 
         verify(inputStream, atLeast(2)).ready();
     }
+
 }

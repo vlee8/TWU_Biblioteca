@@ -38,6 +38,7 @@ public class BibliotecaApp {
             } else if ("Q".equals(userInput)) {
                 return;
             } else {
+                outputStream.println("Select a valid option!");
                 parseMenuOption();
             }
 
