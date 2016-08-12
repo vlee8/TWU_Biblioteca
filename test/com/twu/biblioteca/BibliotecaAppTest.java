@@ -1,12 +1,10 @@
 package com.twu.biblioteca;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.*;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -16,12 +14,14 @@ public class BibliotecaAppTest {
     PrintStream outputStream;
     BufferedReader inputStream;
     BibliotecaApp bibliotecaApp;
+    Books books;
 
     @Before
     public void setUp() throws Exception {
         outputStream = mock(PrintStream.class);
         inputStream = mock(BufferedReader.class);
-        bibliotecaApp = new BibliotecaApp(outputStream, inputStream);
+        books = mock(Books.class);
+        bibliotecaApp = new BibliotecaApp(outputStream, inputStream, books);
         when(inputStream.ready()).thenReturn(true);
         when(inputStream.readLine()).thenReturn("Q");
     }
@@ -48,7 +48,7 @@ public class BibliotecaAppTest {
 
         bibliotecaApp.run();
 
-        verify(outputStream).println("List of Books");
+        verify(books).displayList();
     }
 
     @Test
@@ -61,7 +61,7 @@ public class BibliotecaAppTest {
         bibliotecaApp.run();
 
         verify(outputStream, times(2)).println("[L]ist Books");
-        verify(outputStream).println("List of Books");
+        verify(books).displayList();
         verify(outputStream).println("Select a valid option!");
     }
 
@@ -74,7 +74,7 @@ public class BibliotecaAppTest {
         bibliotecaApp.run();
 
         verify(outputStream, times(2)).println("[L]ist Books");
-        verify(outputStream).println("List of Books");
+        verify(books).displayList();
     }
 
     @Test

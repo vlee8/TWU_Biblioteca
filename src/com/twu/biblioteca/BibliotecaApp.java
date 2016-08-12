@@ -2,17 +2,18 @@ package com.twu.biblioteca;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
 
 public class BibliotecaApp {
 
-    private PrintStream outputStream;
-    private BufferedReader inputStream;
+    private final PrintStream outputStream;
+    private final BufferedReader inputStream;
+    private final Books books;
 
-    public BibliotecaApp(PrintStream outputStream, BufferedReader inputStream) {
+    public BibliotecaApp(PrintStream outputStream, BufferedReader inputStream, Books books) {
         this.outputStream = outputStream;
         this.inputStream = inputStream;
+        this.books = books;
     }
 
     public void run() {
@@ -34,14 +35,13 @@ public class BibliotecaApp {
 
             String userInput = inputStream.readLine();
             if ("L".equals(userInput)) {
-                outputStream.println("List of Books");
+                books.displayList();
             } else if ("Q".equals(userInput)) {
                 return;
             } else {
                 outputStream.println("Select a valid option!");
                 parseMenuOption();
             }
-
         } catch (IOException e) {
             parseMenuOption();
         } catch (InterruptedException e) {
