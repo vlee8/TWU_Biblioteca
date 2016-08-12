@@ -104,4 +104,13 @@ public class BibliotecaAppTest {
         verify(inputStream, atLeast(2)).ready();
     }
 
+    @Test
+    public void shouldCheckOutBookWhenOptionIsSelected() throws Exception {
+        when(inputStream.readLine()).thenReturn("CO");
+
+        bibliotecaApp.run();
+
+        verify(books).checkOutBook(0);
+    }
+
 }

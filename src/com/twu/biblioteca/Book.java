@@ -9,11 +9,13 @@ public class Book {
     private final String title;
     private final String author;
     private final int year;
+    private boolean checkedOut;
 
     public Book(String title, String author, int year) {
         this.title = title;
         this.author = author;
         this.year = year;
+        this.checkedOut = false;
     }
 
     public String getTitle() {
@@ -27,4 +29,13 @@ public class Book {
     public int getYear() {
         return year;
     }
+
+    public void setCheckedOut(boolean isCheckedOut) {
+        checkedOut = isCheckedOut;
+    }
+
+    public boolean getCheckedOut() {
+        return checkedOut;
+    }
+
 }

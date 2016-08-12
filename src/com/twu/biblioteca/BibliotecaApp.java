@@ -38,6 +38,8 @@ public class BibliotecaApp {
                 books.displayList();
             } else if ("Q".equals(userInput)) {
                 return;
+            } else if ("CO".equals(userInput)) {
+                books.checkOutBook(0);
             } else {
                 outputStream.println("Select a valid option!");
                 parseMenuOption();

@@ -14,6 +14,7 @@ public class Books {
     public Books(PrintStream outputStream) {
         this.outputStream = outputStream;
         listOfBooks = new ArrayList<>();
+        addPreexistingBooks();
     }
 
     public void displayList() {
@@ -26,4 +27,28 @@ public class Books {
     public void addBook(Book book) {
         listOfBooks.add(book);
     }
+
+    public void addPreexistingBooks()
+    {
+        Book book = new Book("This is a book title", "Author", 2016);
+        addBook(book);
+        book = new Book("This is still a book title", "Author Two", 2017);
+        addBook(book);
+    }
+
+    public void checkOutBook(int bookID)
+    {
+        try {
+            if (!listOfBooks.get(bookID).getCheckedOut()) {
+                listOfBooks.get(bookID).setCheckedOut(true);
+                outputStream.println("Thank you! Enjoy the book");
+            } else {
+                outputStream.println("That book is not available.");
+            }
+        }
+        catch (IndexOutOfBoundsException e) {
+            outputStream.println("That book is not available.");
+        }
+    }
+
 }
