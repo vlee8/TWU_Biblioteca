@@ -1,6 +1,7 @@
 package com.twu.biblioteca;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.*;
@@ -21,6 +22,8 @@ public class BibliotecaAppTest {
         outputStream = mock(PrintStream.class);
         inputStream = mock(BufferedReader.class);
         bibliotecaApp = new BibliotecaApp(outputStream, inputStream);
+        when(inputStream.ready()).thenReturn(true);
+        when(inputStream.readLine()).thenReturn("Q");
     }
 
     @Test
@@ -40,7 +43,10 @@ public class BibliotecaAppTest {
     @Test
     public void shouldListBooksWhenOptionIsSelected() throws Exception {
         // when the user inputs "L" into the menu prompt
-        when(inputStream.readLine()).thenReturn("L");
+        when(inputStream.ready()).thenReturn(true);
+        when(inputStream.readLine())
+                .thenReturn("L")
+                .thenReturn("Q");
 
         bibliotecaApp.run();
 
@@ -48,12 +54,30 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void shouldRepeatMenuOptionsIfIoExceptionIsThrown() throws Exception {
-        // when the user inputs "L" into the menu prompt
-        when(inputStream.readLine()).thenThrow(IOException.class);
+    public void shouldRepeatMenuOptionsIfInputIsInvalid() throws Exception {
+        when(inputStream.ready()).thenReturn(true);
+        when(inputStream.readLine())
+                .thenReturn("NotSupported")
+                .thenReturn("L")
+                .thenReturn("Q");
+
         bibliotecaApp.run();
 
         verify(outputStream, times(2)).println("[L]ist Books");
+        verify(outputStream).println("List of Books");
+    }
+
+    @Test
+    public void shouldRepeatMenuOptionsIfIoExceptionIsThrown() throws Exception {
+        when(inputStream.ready()).thenReturn(true);
+        when(inputStream.readLine())
+                .thenThrow(IOException.class)
+                .thenReturn("L")
+                .thenReturn("Q");
+        bibliotecaApp.run();
+
+        verify(outputStream, times(2)).println("[L]ist Books");
+        verify(outputStream).println("List of Books");
     }
 
     @Test
@@ -61,5 +85,26 @@ public class BibliotecaAppTest {
         bibliotecaApp.run();
 
         verify(outputStream).println("[Q]uit");
+    }
+
+    @Test
+    public void shouldQuitWhenOptionIsSelected() throws Exception {
+        when(inputStream.ready()).thenReturn(true);
+        when(inputStream.readLine()).thenReturn("Q");
+
+        bibliotecaApp.run();
+
+        verify(outputStream, times(1)).println("[L]ist Books");
+    }
+
+    @Test
+    public void shouldNotQuitStraightAway() throws Exception {
+        when(inputStream.ready())
+                .thenReturn(false)
+                .thenReturn(true);
+
+        bibliotecaApp.run();
+
+        verify(inputStream, atLeast(2)).ready();
     }
 }
