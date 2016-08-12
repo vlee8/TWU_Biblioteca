@@ -9,11 +9,13 @@ public class BibliotecaApp {
     private final PrintStream outputStream;
     private final BufferedReader inputStream;
     private final Books books;
+    private final Movies movies;
 
-    public BibliotecaApp(PrintStream outputStream, BufferedReader inputStream, Books books) {
+    public BibliotecaApp(PrintStream outputStream, BufferedReader inputStream, Books books, Movies movies) {
         this.outputStream = outputStream;
         this.inputStream = inputStream;
         this.books = books;
+        this.movies = movies;
     }
 
     public void run() {
@@ -31,6 +33,9 @@ public class BibliotecaApp {
         outputStream.println("[Q]: Quit");
         outputStream.println("[C <ID>]: Check Out Book");
         outputStream.println("[R <ID>]: Return Book");
+        outputStream.println("[M]: List Movies");
+        outputStream.println("[CM <ID>]: Check Out Movie");
+        outputStream.println("[RM <ID>]: Return Movie");
 
         try {
             while (!inputStream.ready()) {
@@ -40,12 +45,18 @@ public class BibliotecaApp {
             String userInput = inputStream.readLine();
             if (Commands.MainMenu.LIST_BOOKS_COMMAND.equals(userInput)) {
                 books.displayList();
+            } else if (Commands.MainMenu.LIST_MOVIES_COMMAND.equals(userInput)) {
+                movies.displayList();
             } else if (Commands.MainMenu.MAIN_MENU_QUIT_COMMAND.equals(userInput)) {
                 return;
             } else if (checkIfBookCommand(userInput).equals("")) {
                 outputStream.println(Commands.MainMenu.MAIN_MENU_INVALID_SELECTION_COMMAND);
             } else if (!checkIfBookCommand(userInput).equals("")) {
-                performBookCommand(userInput);
+                if (checkIfMovieCommand(userInput).equals("")) {
+                    performBookCommand(userInput);
+                } else {
+                    performMovieCommand(userInput);
+                }
             }
 
             parseMenuOption();
@@ -64,6 +75,14 @@ public class BibliotecaApp {
         return "";
     }
 
+    public String checkIfMovieCommand(String fullCommand) {
+        int index = fullCommand.lastIndexOf(" ");
+        if ((index > -1) && (fullCommand.substring(1, fullCommand.lastIndexOf(" ")).equals("M"))) {
+            return fullCommand.substring(0, fullCommand.lastIndexOf(" "));
+        }
+        return "";
+    }
+
     public int getBookIDFromCommand(String fullCommand) {
         int bookID;
         fullCommand = fullCommand.substring(fullCommand.lastIndexOf(" ") + 1, fullCommand.length());
@@ -74,6 +93,18 @@ public class BibliotecaApp {
             return -1;
         }
         return bookID;
+    }
+
+    public int getMovieIDFromCommand(String fullCommand) {
+        int movieID;
+        fullCommand = fullCommand.substring(fullCommand.lastIndexOf(" ") + 1, fullCommand.length());
+        try {
+            movieID = Integer.parseInt(fullCommand);
+        }
+        catch (NumberFormatException e) {
+            return -1;
+        }
+        return movieID;
     }
 
     public void performBookCommand(String userInput)
@@ -88,6 +119,24 @@ public class BibliotecaApp {
                 break;
             case Commands.MainMenu.RETURN_COMMAND:
                 books.returnBook(bookID);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void performMovieCommand(String userInput)
+    {
+        String command = checkIfMovieCommand(userInput);
+        int movieID = getMovieIDFromCommand(userInput);
+
+        switch (command)
+        {
+            case Commands.MainMenu.CHECKOUT_MOVIES_COMMAND:
+                movies.checkOutMovie(movieID);
+                break;
+            case Commands.MainMenu.RETURN_MOVIES_COMMAND:
+                movies.returnMovie(movieID);
                 break;
             default:
                 break;

@@ -17,13 +17,15 @@ public class BibliotecaAppTest {
     BufferedReader inputStream;
     BibliotecaApp bibliotecaApp;
     Books books;
+    Movies movies;
 
     @Before
     public void setUp() throws Exception {
         outputStream = mock(PrintStream.class);
         inputStream = mock(BufferedReader.class);
         books = mock(Books.class);
-        bibliotecaApp = new BibliotecaApp(outputStream, inputStream, books);
+        movies = mock(Movies.class);
+        bibliotecaApp = new BibliotecaApp(outputStream, inputStream, books, movies);
         when(inputStream.ready()).thenReturn(true);
         when(inputStream.readLine()).thenReturn("Q");
     }
@@ -142,6 +144,70 @@ public class BibliotecaAppTest {
     public void shouldPerformBookCommandGivenRCommand() throws Exception {
         bibliotecaApp.performBookCommand("R 0");
         verify(books).returnBook(0);
+    }
+
+    @Test
+    public void shouldShowOptionToListMovies() throws Exception {
+        bibliotecaApp.run();
+
+        verify(outputStream).println("[M]: List Movies");
+    }
+
+    @Test
+    public void shouldListMoviesWhenOptionIsSelected() throws Exception {
+        when(inputStream.readLine())
+                .thenReturn("M")
+                .thenReturn("Q");
+
+        bibliotecaApp.run();
+
+        verify(movies).displayList();
+    }
+
+    @Test
+    public void shouldShowOptionToCheckOutMovies() throws Exception {
+        bibliotecaApp.run();
+
+        verify(outputStream).println("[CM <ID>]: Check Out Movie");
+    }
+
+    @Test
+    public void shouldShowOptionToReturnMovies() throws Exception {
+        bibliotecaApp.run();
+
+        verify(outputStream).println("[RM <ID>]: Return Movie");
+    }
+
+    @Test
+    public void shouldReturnOnlyCommandForValidMovieCommand() throws Exception {
+        assertEquals("C", bibliotecaApp.checkIfBookCommand("C 0"));
+    }
+
+    @Test
+    public void shouldReturnNothingForCommandWithoutMovieID() throws Exception {
+        assertEquals("", bibliotecaApp.checkIfBookCommand("C"));
+    }
+
+    @Test
+    public void shouldReturnOnlyBookIDForValidMovieCommand() throws Exception {
+        assertEquals(0, bibliotecaApp.getBookIDFromCommand("CM 0"));
+    }
+
+    @Test
+    public void shouldReturnNegativeForNonIntegerMovieID() throws Exception {
+        assertEquals(-1, bibliotecaApp.getBookIDFromCommand("CM a"));
+    }
+
+    @Test
+    public void shouldPerformMovieCommandGivenCMCommand() throws Exception {
+        bibliotecaApp.performMovieCommand("CM 0");
+        verify(movies).checkOutMovie(0);
+    }
+
+    @Test
+    public void shouldPerformMovieCommandGivenRMCommand() throws Exception {
+        bibliotecaApp.performMovieCommand("RM 0");
+        verify(movies).returnMovie(0);
     }
 
 }

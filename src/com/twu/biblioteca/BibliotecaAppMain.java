@@ -12,7 +12,7 @@ public class BibliotecaAppMain {
     public static void main(String[] args) throws IOException {
         PrintStream printStream = System.out;
         BufferedReader inputStream = new BufferedReader(new InputStreamReader(System.in));
-        BibliotecaApp bibliotecaApp = new BibliotecaApp(printStream, inputStream, new Books(printStream));
+        BibliotecaApp bibliotecaApp = new BibliotecaApp(printStream, inputStream, new Books(printStream), new Movies(printStream));
         bibliotecaApp.run();
     }
 }

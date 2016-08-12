@@ -24,6 +24,9 @@ public class Commands {
         public static final String MAIN_MENU_QUIT_COMMAND = "Q";
         public static final String CHECKOUT_COMMAND = "C";
         public static final String RETURN_COMMAND = "R";
+        public static final String LIST_MOVIES_COMMAND = "M";
+        public static final String CHECKOUT_MOVIES_COMMAND = "CM";
+        public static final String RETURN_MOVIES_COMMAND = "RM";
     }
 
     public class ErrorMessage
@@ -37,5 +40,13 @@ public class Commands {
         public static final String SUCCESSFUL_RETURN_MESSAGE = "Thank you for returning the book.";
         public static final String UNSUCCESSFUL_RETURN_MESSAGE = "That is not a valid book to return.";
     }
+
+    public class MoviesCommands {
+        public static final String SUCCESSFUL_CHECKOUT_MESSAGE = "Thank you! Enjoy the movie";
+        public static final String UNSUCCESSFUL_CHECKOUT_MESSAGE = "That movie is not available.";
+        public static final String SUCCESSFUL_RETURN_MESSAGE = "Thank you for returning the movie.";
+        public static final String UNSUCCESSFUL_RETURN_MESSAGE = "That is not a valid movie to return.";
+    }
+
 
 }
