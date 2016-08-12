@@ -21,10 +21,10 @@ public class MoviesTest {
         //books.addBook(new Book("This is still a movie title", 2017, "Director Two"));
         movies.displayList();
 
-        verify(outputStream).println("ID | Name | Year | Director");
+        verify(outputStream).println("ID | Name | Year | Director | Movie Rating");
         verify(outputStream).println("--------------------------------");
-        verify(outputStream).println("0 | This is a movie title | 2016 | Director");
-        verify(outputStream).println("1 | This is still a movie title | 2017 | Director Two");
+        verify(outputStream).println("0 | This is a movie title | 2016 | Director | Unrated");
+        verify(outputStream).println("1 | This is still a movie title | 2017 | Director Two | Unrated");
     }
 
     @Test
@@ -35,9 +35,9 @@ public class MoviesTest {
         movies.displayList();
 
         verify(outputStream).println("Thank you! Enjoy the movie");
-        verify(outputStream).println("ID | Name | Year | Director");
+        verify(outputStream).println("ID | Name | Year | Director | Movie Rating");
         verify(outputStream).println("--------------------------------");
-        verify(outputStream).println("1 | This is still a movie title | 2017 | Director Two");
+        verify(outputStream).println("1 | This is still a movie title | 2017 | Director Two | Unrated");
     }
 
     @Test
@@ -67,4 +67,5 @@ public class MoviesTest {
 
         verify(outputStream).println("That movie is not available.");
     }
+
 }

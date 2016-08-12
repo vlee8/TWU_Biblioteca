@@ -18,13 +18,18 @@ public class Movies {
     }
 
     public void displayList() {
-        outputStream.println("ID | Name | Year | Director");
+        outputStream.println("ID | Name | Year | Director | Movie Rating");
         outputStream.println("--------------------------------");
         int movieID = -1;
         for (Movie movie : listOfMovies) {
             movieID++;
             if (!movie.getCheckedOut()) {
-                outputStream.println(movieID + " | " + movie.getName() + " | " + movie.getYear() + " | " + movie.getDirector());
+                String movieRating = "Unrated";
+                if (movie.getMovieRating() > -1)
+                {
+                    movieRating = Integer.toString(movie.getMovieRating());
+                }
+                outputStream.println(movieID + " | " + movie.getName() + " | " + movie.getYear() + " | " + movie.getDirector() + " | " + movieRating);
             }
         }
     }
