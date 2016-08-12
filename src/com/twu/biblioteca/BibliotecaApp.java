@@ -27,6 +27,7 @@ public class BibliotecaApp {
     private void parseMenuOption() {
         outputStream.println("[L]ist Books");
         outputStream.println("[Q]uit");
+        outputStream.println("[C]heck Out Book");
 
         try {
             while (!inputStream.ready()) {
@@ -38,17 +39,41 @@ public class BibliotecaApp {
                 books.displayList();
             } else if ("Q".equals(userInput)) {
                 return;
-            } else if ("CO".equals(userInput)) {
+            } else if ("C".equals(userInput)) {
                 books.checkOutBook(0);
             } else {
                 outputStream.println("Select a valid option!");
                 parseMenuOption();
             }
+
+            parseMenuOption();
         } catch (IOException e) {
             parseMenuOption();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
+
+    public String checkIfBookCommand(String fullCommand) {
+        int index = fullCommand.lastIndexOf(" ");
+        if (index > -1) {
+            return fullCommand.substring(0, fullCommand.lastIndexOf(" "));
+        }
+        return "";
+    }
+
+    public int getBookIDFromCommand(String fullCommand) {
+        int bookID;
+        fullCommand = fullCommand.substring(fullCommand.lastIndexOf(" ") + 1, fullCommand.length());
+        try {
+            bookID = Integer.parseInt(fullCommand);
+        }
+        catch (NumberFormatException e) {
+            return -1;
+        }
+        return bookID;
+    }
+
+
 
 }

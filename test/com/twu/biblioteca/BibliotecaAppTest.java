@@ -1,10 +1,12 @@
 package com.twu.biblioteca;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.*;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 /**
@@ -85,6 +87,13 @@ public class BibliotecaAppTest {
     }
 
     @Test
+    public void shouldShowOptionForCheckOutBook() throws Exception {
+        bibliotecaApp.run();
+
+        verify(outputStream).println("[C]heck Out Book");
+    }
+
+    @Test
     public void shouldQuitWhenOptionIsSelected() throws Exception {
         when(inputStream.readLine()).thenReturn("Q");
 
@@ -105,12 +114,42 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void shouldCheckOutBookWhenOptionIsSelected() throws Exception {
-        when(inputStream.readLine()).thenReturn("CO");
+    public void shouldCheckOutBookWhenBasicCommandIsSelected() throws Exception {
+        when(inputStream.readLine()).thenReturn("C");
 
         bibliotecaApp.run();
 
         verify(books).checkOutBook(0);
+    }
+
+    @Ignore
+    @Test
+    public void shouldCheckOutBookWhenBasicCommandIsSelectedWithBookID() throws Exception {
+        when(inputStream.readLine()).thenReturn("C 0");
+
+        bibliotecaApp.run();
+
+        verify(books).checkOutBook(0);
+    }
+
+    @Test
+    public void shouldReturnOnlyCommandForValidBookCommand() throws Exception {
+        assertEquals("C", bibliotecaApp.checkIfBookCommand("C 0"));
+    }
+
+    @Test
+    public void shouldReturnNothingForCommandWithoutBookID() throws Exception {
+        assertEquals("", bibliotecaApp.checkIfBookCommand("C"));
+    }
+
+    @Test
+    public void shouldReturnOnlyBookIDForValidBookCommand() throws Exception {
+        assertEquals(0, bibliotecaApp.getBookIDFromCommand("C 0"));
+    }
+
+    @Test
+    public void shouldReturnNegativeForNonIntegerBookID() throws Exception {
+        assertEquals(-1, bibliotecaApp.getBookIDFromCommand("C a"));
     }
 
 }
