@@ -32,14 +32,14 @@ public class BibliotecaAppTest {
     public void shouldDisplayWelcomeMessage() throws Exception {
         bibliotecaApp.run();
 
-        verify(outputStream).println("Welcome!");
+        verify(outputStream).println("Welcome to Biblioteca!");
     }
 
     @Test
     public void shouldShowOptionToListBooks() throws Exception {
         bibliotecaApp.run();
 
-        verify(outputStream).println("[L]ist Books");
+        verify(outputStream).println("[L]: List Books");
     }
 
     @Test
@@ -62,7 +62,7 @@ public class BibliotecaAppTest {
 
         bibliotecaApp.run();
 
-        verify(outputStream, times(2)).println("[L]ist Books");
+        verify(outputStream, times(3)).println("[L]: List Books");
         verify(books).displayList();
         verify(outputStream).println("Select a valid option!");
     }
@@ -75,7 +75,7 @@ public class BibliotecaAppTest {
                 .thenReturn("Q");
         bibliotecaApp.run();
 
-        verify(outputStream, times(2)).println("[L]ist Books");
+        verify(outputStream, times(3)).println("[L]: List Books");
         verify(books).displayList();
     }
 
@@ -83,14 +83,14 @@ public class BibliotecaAppTest {
     public void shouldShowOptionToQuit() throws Exception {
         bibliotecaApp.run();
 
-        verify(outputStream).println("[Q]uit");
+        verify(outputStream).println("[Q]: Quit");
     }
 
     @Test
     public void shouldShowOptionForCheckOutBook() throws Exception {
         bibliotecaApp.run();
 
-        verify(outputStream).println("[C]heck Out Book");
+        verify(outputStream).println("[C <ID>]: Check Out Book");
     }
 
     @Test
@@ -99,7 +99,7 @@ public class BibliotecaAppTest {
 
         bibliotecaApp.run();
 
-        verify(outputStream, times(1)).println("[L]ist Books");
+        verify(outputStream, times(1)).println("[L]: List Books");
     }
 
     @Test
@@ -109,27 +109,7 @@ public class BibliotecaAppTest {
                 .thenReturn(true);
 
         bibliotecaApp.run();
-
         verify(inputStream, atLeast(2)).ready();
-    }
-
-    @Test
-    public void shouldCheckOutBookWhenBasicCommandIsSelected() throws Exception {
-        when(inputStream.readLine()).thenReturn("C");
-
-        bibliotecaApp.run();
-
-        verify(books).checkOutBook(0);
-    }
-
-    @Ignore
-    @Test
-    public void shouldCheckOutBookWhenBasicCommandIsSelectedWithBookID() throws Exception {
-        when(inputStream.readLine()).thenReturn("C 0");
-
-        bibliotecaApp.run();
-
-        verify(books).checkOutBook(0);
     }
 
     @Test
@@ -150,6 +130,18 @@ public class BibliotecaAppTest {
     @Test
     public void shouldReturnNegativeForNonIntegerBookID() throws Exception {
         assertEquals(-1, bibliotecaApp.getBookIDFromCommand("C a"));
+    }
+
+    @Test
+    public void shouldPerformBookCommandGivenCCommand() throws Exception {
+        bibliotecaApp.performBookCommand("C 0");
+        verify(books).checkOutBook(0);
+    }
+
+    @Test
+    public void shouldPerformBookCommandGivenRCommand() throws Exception {
+        bibliotecaApp.performBookCommand("R 0");
+        verify(books).returnBook(0);
     }
 
 }

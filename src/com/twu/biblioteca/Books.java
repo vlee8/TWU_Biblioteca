@@ -18,9 +18,14 @@ public class Books {
     }
 
     public void displayList() {
-        outputStream.println("Title | Author | Year");
+        outputStream.println("ID | Title | Author | Year");
+        outputStream.println("--------------------------------");
+        int bookID = -1;
         for (Book book : listOfBooks) {
-            outputStream.println(book.getTitle() + " | " + book.getAuthor() + " | " + book.getYear());
+            bookID++;
+            if (!book.getCheckedOut()) {
+                outputStream.println(bookID + " | " + book.getTitle() + " | " + book.getAuthor() + " | " + book.getYear());
+            }
         }
     }
 
@@ -41,13 +46,28 @@ public class Books {
         try {
             if (!listOfBooks.get(bookID).getCheckedOut()) {
                 listOfBooks.get(bookID).setCheckedOut(true);
-                outputStream.println("Thank you! Enjoy the book");
+                outputStream.println(Commands.BooksCommands.SUCCESSFUL_CHECKOUT_MESSAGE);
             } else {
-                outputStream.println("That book is not available.");
+                outputStream.println(Commands.BooksCommands.UNSUCCESSFUL_CHECKOUT_MESSAGE);
             }
         }
         catch (IndexOutOfBoundsException e) {
-            outputStream.println("That book is not available.");
+            outputStream.println(Commands.BooksCommands.UNSUCCESSFUL_CHECKOUT_MESSAGE);
+        }
+    }
+
+    public void returnBook(int bookID)
+    {
+        try {
+            if (listOfBooks.get(bookID).getCheckedOut()) {
+                listOfBooks.get(bookID).setCheckedOut(false);
+                outputStream.println(Commands.BooksCommands.SUCCESSFUL_RETURN_MESSAGE);
+            } else {
+                outputStream.println(Commands.BooksCommands.UNSUCCESSFUL_RETURN_MESSAGE);
+            }
+        }
+        catch (IndexOutOfBoundsException e) {
+            outputStream.println(Commands.BooksCommands.UNSUCCESSFUL_RETURN_MESSAGE);
         }
     }
 

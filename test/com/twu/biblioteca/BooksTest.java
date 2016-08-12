@@ -27,9 +27,10 @@ public class BooksTest {
         //books.addBook(new Book("This is still a book title", "Author Two", 2017));
         books.displayList();
 
-        verify(outputStream).println("Title | Author | Year");
-        verify(outputStream).println("This is a book title | Author | 2016");
-        verify(outputStream).println("This is still a book title | Author Two | 2017");
+        verify(outputStream).println("ID | Title | Author | Year");
+        verify(outputStream).println("--------------------------------");
+        verify(outputStream).println("0 | This is a book title | Author | 2016");
+        verify(outputStream).println("1 | This is still a book title | Author Two | 2017");
     }
 
     @Test
@@ -39,8 +40,10 @@ public class BooksTest {
         books.checkOutBook(0);
         books.displayList();
 
-        verify(outputStream).println("Title | Author | Year");
-        verify(outputStream).println("This is still a book title | Author Two | 2017");
+        verify(outputStream).println("Thank you! Enjoy the book");
+        verify(outputStream).println("ID | Title | Author | Year");
+        verify(outputStream).println("--------------------------------");
+        verify(outputStream).println("1 | This is still a book title | Author Two | 2017");
     }
 
     @Test

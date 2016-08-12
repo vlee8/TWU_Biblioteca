@@ -17,17 +17,20 @@ public class BibliotecaApp {
     }
 
     public void run() {
-        outputStream.println("Welcome!");
-        // TODO loop through list of options
-
-        // Wait for user input
+        outputStream.println(Commands.WelcomeScreen.WELCOME_SCREEN_MESSAGE);
         parseMenuOption();
     }
 
+
+    // To List Books, enter L
+    // To Quit, enter Q
+    // To Check Out Book, enter C followed by a space and its ID which is given by the List
+    // To Return Book, enter R followed by a space and its ID which is given by the List
     private void parseMenuOption() {
-        outputStream.println("[L]ist Books");
-        outputStream.println("[Q]uit");
-        outputStream.println("[C]heck Out Book");
+        outputStream.println("[L]: List Books");
+        outputStream.println("[Q]: Quit");
+        outputStream.println("[C <ID>]: Check Out Book");
+        outputStream.println("[R <ID>]: Return Book");
 
         try {
             while (!inputStream.ready()) {
@@ -35,15 +38,14 @@ public class BibliotecaApp {
             }
 
             String userInput = inputStream.readLine();
-            if ("L".equals(userInput)) {
+            if (Commands.MainMenu.LIST_BOOKS_COMMAND.equals(userInput)) {
                 books.displayList();
-            } else if ("Q".equals(userInput)) {
+            } else if (Commands.MainMenu.MAIN_MENU_QUIT_COMMAND.equals(userInput)) {
                 return;
-            } else if ("C".equals(userInput)) {
-                books.checkOutBook(0);
-            } else {
-                outputStream.println("Select a valid option!");
-                parseMenuOption();
+            } else if (checkIfBookCommand(userInput).equals("")) {
+                outputStream.println(Commands.MainMenu.MAIN_MENU_INVALID_SELECTION_COMMAND);
+            } else if (!checkIfBookCommand(userInput).equals("")) {
+                performBookCommand(userInput);
             }
 
             parseMenuOption();
@@ -74,6 +76,22 @@ public class BibliotecaApp {
         return bookID;
     }
 
+    public void performBookCommand(String userInput)
+    {
+        String command = checkIfBookCommand(userInput);
+        int bookID = getBookIDFromCommand(userInput);
 
+        switch (command)
+        {
+            case Commands.MainMenu.CHECKOUT_COMMAND:
+                books.checkOutBook(bookID);
+                break;
+            case Commands.MainMenu.RETURN_COMMAND:
+                books.returnBook(bookID);
+                break;
+            default:
+                break;
+        }
+    }
 
 }
