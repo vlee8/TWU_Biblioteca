@@ -26,9 +26,9 @@ public class Accounts {
 
     public void addPredefinedAccounts()
     {
-        Account account = new Account("123-4567", "password");
+        Account account = new Account("123-4567", "password", "Test User", "test@test.com", "07777777777");
         addAccount(account);
-        account = new Account("234-5678", "password two");
+        account = new Account("234-5678", "passwordtwo", "Test User 2", "test2@test.com", "07777777778");
         addAccount(account);
     }
 
@@ -66,7 +66,6 @@ public class Accounts {
                         return "";
                     }
                 }
-                return "";
             }
         }
         return "";

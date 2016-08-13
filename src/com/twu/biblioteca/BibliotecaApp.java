@@ -19,6 +19,8 @@ public class BibliotecaApp {
         this.books = books;
         this.movies = movies;
         this.accounts = accounts;
+        this.loggedInAccount = new Account(Commands.Login.NOT_LOGGED_IN_LIBRARY_NUMBER_PLACEHOLDER,
+                Commands.Login.NOT_LOGGED_IN_PASSWORD_PLACEHOLDER, "", "", "");
     }
 
     public void run() {
@@ -39,7 +41,14 @@ public class BibliotecaApp {
         outputStream.println("[M]: List Movies");
         outputStream.println("[CM <ID>]: Check Out Movie");
         outputStream.println("[RM <ID>]: Return Movie");
-        outputStream.println("[LA <LIBRARY NUMBER> <PASSWORD>]: Login To Account");
+
+        if (loggedInAccount.getLibraryNumber().equals(Commands.Login.NOT_LOGGED_IN_LIBRARY_NUMBER_PLACEHOLDER) &&
+                loggedInAccount.getPassword().equals(Commands.Login.NOT_LOGGED_IN_PASSWORD_PLACEHOLDER)) {
+            outputStream.println("[LA <LIBRARY NUMBER> <PASSWORD>]: Login To Account");
+        } else {
+            outputStream.println("Logged in as " + loggedInAccount.getLibraryNumber());
+            printDetails();
+        }
 
         try {
             while (!inputStream.ready()) {
@@ -169,8 +178,14 @@ public class BibliotecaApp {
         }
     }
 
-    public Account getLoggedInAccount() {
-        return loggedInAccount;
+    public void setLoggedInAccount(Account account) {
+        loggedInAccount = account;
+    }
+
+    public void printDetails() {
+        outputStream.println("Name: " + loggedInAccount.getName());
+        outputStream.println("Email Address: " + loggedInAccount.getEmail());
+        outputStream.println("Phone Number: " + loggedInAccount.getPhoneNumber());
     }
 
 }

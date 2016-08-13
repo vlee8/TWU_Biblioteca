@@ -52,6 +52,8 @@ public class Commands {
     public class Login {
         public static final String SUCCESSFUL_LOGIN = "Successfully logged in.";
         public static final String UNSUCCESSFUL_LOGIN = "Invalid credentials.";
+        public static final String NOT_LOGGED_IN_LIBRARY_NUMBER_PLACEHOLDER = "";
+        public static final String NOT_LOGGED_IN_PASSWORD_PLACEHOLDER = "";
     }
 
 }

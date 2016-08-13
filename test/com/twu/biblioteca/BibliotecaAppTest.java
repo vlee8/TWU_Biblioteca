@@ -231,4 +231,15 @@ public class BibliotecaAppTest {
         assertEquals("", bibliotecaApp.checkIfLoginCommand("LA123-4567 password"));
     }
 
+    @Test
+    public void shouldPrintDetailsWhenLoggedIn() throws Exception {
+        Accounts newAccounts = new Accounts(outputStream);
+        bibliotecaApp.setLoggedInAccount(newAccounts.getListOfAccounts().get(0));
+        bibliotecaApp.printDetails();
+
+        verify(outputStream).println("Name: Test User");
+        verify(outputStream).println("Email Address: test@test.com");
+        verify(outputStream).println("Phone Number: 07777777777");
+    }
+
 }
