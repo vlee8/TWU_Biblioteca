@@ -10,12 +10,15 @@ public class BibliotecaApp {
     private final BufferedReader inputStream;
     private final Books books;
     private final Movies movies;
+    private final Accounts accounts;
+    private Account loggedInAccount;
 
-    public BibliotecaApp(PrintStream outputStream, BufferedReader inputStream, Books books, Movies movies) {
+    public BibliotecaApp(PrintStream outputStream, BufferedReader inputStream, Books books, Movies movies, Accounts accounts) {
         this.outputStream = outputStream;
         this.inputStream = inputStream;
         this.books = books;
         this.movies = movies;
+        this.accounts = accounts;
     }
 
     public void run() {
@@ -36,6 +39,7 @@ public class BibliotecaApp {
         outputStream.println("[M]: List Movies");
         outputStream.println("[CM <ID>]: Check Out Movie");
         outputStream.println("[RM <ID>]: Return Movie");
+        outputStream.println("[LA <LIBRARY NUMBER> <PASSWORD>]: Login To Account");
 
         try {
             while (!inputStream.ready()) {
@@ -49,6 +53,10 @@ public class BibliotecaApp {
                 movies.displayList();
             } else if (Commands.MainMenu.MAIN_MENU_QUIT_COMMAND.equals(userInput)) {
                 return;
+            } else if (!checkIfLoginCommand(userInput).equals("")) {
+
+                login(userInput);
+
             } else if (checkIfBookCommand(userInput).equals("")) {
                 outputStream.println(Commands.MainMenu.MAIN_MENU_INVALID_SELECTION_COMMAND);
             } else if (!checkIfBookCommand(userInput).equals("")) {
@@ -141,6 +149,28 @@ public class BibliotecaApp {
             default:
                 break;
         }
+    }
+
+    public String checkIfLoginCommand(String fullCommand) {
+        if (fullCommand.substring(0, 3).equals(Commands.MainMenu.LOGIN_COMMAND + " ")) {
+            return fullCommand.substring(3, fullCommand.length());
+        }
+        return "";
+    }
+
+    public void login(String userInput) {
+        String libraryNumber = accounts.checkLoginCredentials(checkIfLoginCommand(userInput));
+
+        if (!libraryNumber.equals("")) {
+            outputStream.println(Commands.Login.SUCCESSFUL_LOGIN);
+            loggedInAccount = accounts.getAccountFromLibraryNumber(libraryNumber);
+        } else {
+            outputStream.println(Commands.Login.UNSUCCESSFUL_LOGIN);
+        }
+    }
+
+    public Account getLoggedInAccount() {
+        return loggedInAccount;
     }
 
 }

@@ -27,6 +27,7 @@ public class Commands {
         public static final String LIST_MOVIES_COMMAND = "M";
         public static final String CHECKOUT_MOVIES_COMMAND = "CM";
         public static final String RETURN_MOVIES_COMMAND = "RM";
+        public static final String LOGIN_COMMAND = "LA";
     }
 
     public class ErrorMessage
@@ -48,5 +49,9 @@ public class Commands {
         public static final String UNSUCCESSFUL_RETURN_MESSAGE = "That is not a valid movie to return.";
     }
 
+    public class Login {
+        public static final String SUCCESSFUL_LOGIN = "Successfully logged in.";
+        public static final String UNSUCCESSFUL_LOGIN = "Invalid credentials.";
+    }
 
 }

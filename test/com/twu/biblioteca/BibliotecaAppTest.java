@@ -18,6 +18,7 @@ public class BibliotecaAppTest {
     BibliotecaApp bibliotecaApp;
     Books books;
     Movies movies;
+    Accounts accounts;
 
     @Before
     public void setUp() throws Exception {
@@ -25,7 +26,8 @@ public class BibliotecaAppTest {
         inputStream = mock(BufferedReader.class);
         books = mock(Books.class);
         movies = mock(Movies.class);
-        bibliotecaApp = new BibliotecaApp(outputStream, inputStream, books, movies);
+        accounts = mock(Accounts.class);
+        bibliotecaApp = new BibliotecaApp(outputStream, inputStream, books, movies, accounts);
         when(inputStream.ready()).thenReturn(true);
         when(inputStream.readLine()).thenReturn("Q");
     }
@@ -208,6 +210,25 @@ public class BibliotecaAppTest {
     public void shouldPerformMovieCommandGivenRMCommand() throws Exception {
         bibliotecaApp.performMovieCommand("RM 0");
         verify(movies).returnMovie(0);
+    }
+
+    @Test
+    public void shouldShowOptionForLoginToAccount() throws Exception {
+        bibliotecaApp.run();
+
+        verify(outputStream).println("[LA <LIBRARY NUMBER> <PASSWORD>]: Login To Account");
+    }
+
+    @Test
+    public void shouldDetectCorrectLoginCommand() throws Exception {
+
+        assertEquals("123-4567 password", bibliotecaApp.checkIfLoginCommand("LA 123-4567 password"));
+    }
+
+    @Test
+    public void shouldDetectIncorrectLoginCommand() throws Exception {
+
+        assertEquals("", bibliotecaApp.checkIfLoginCommand("LA123-4567 password"));
     }
 
 }
