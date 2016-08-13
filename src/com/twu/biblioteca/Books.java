@@ -41,18 +41,22 @@ public class Books {
         addBook(book);
     }
 
-    public void checkOutBook(int bookID)
+    public void checkOutBook(int bookID, Account account)
     {
-        try {
-            if (!listOfBooks.get(bookID).getCheckedOut()) {
-                listOfBooks.get(bookID).setCheckedOut(true);
-                outputStream.println(Commands.BooksCommands.SUCCESSFUL_CHECKOUT_MESSAGE);
-            } else {
+        if (checkIfLoggedIn(account)) {
+            try {
+                if (!listOfBooks.get(bookID).getCheckedOut()) {
+                    listOfBooks.get(bookID).setCheckedOut(true);
+                    //listOfBooks.get(bookID).setCheckedOutBy(account);
+                    outputStream.println(Commands.BooksCommands.SUCCESSFUL_CHECKOUT_MESSAGE);
+                } else {
+                    outputStream.println(Commands.BooksCommands.UNSUCCESSFUL_CHECKOUT_MESSAGE);
+                }
+            } catch (IndexOutOfBoundsException e) {
                 outputStream.println(Commands.BooksCommands.UNSUCCESSFUL_CHECKOUT_MESSAGE);
             }
-        }
-        catch (IndexOutOfBoundsException e) {
-            outputStream.println(Commands.BooksCommands.UNSUCCESSFUL_CHECKOUT_MESSAGE);
+        } else {
+            outputStream.println(Commands.Login.REQUIRES_LOG_IN_MESSAGE);
         }
     }
 
@@ -69,6 +73,18 @@ public class Books {
         catch (IndexOutOfBoundsException e) {
             outputStream.println(Commands.BooksCommands.UNSUCCESSFUL_RETURN_MESSAGE);
         }
+    }
+
+    public boolean checkIfLoggedIn(Account account) {
+        if (account.getLibraryNumber().equals(Commands.Login.NOT_LOGGED_IN_LIBRARY_NUMBER_PLACEHOLDER) &&
+                account.getPassword().equals(Commands.Login.NOT_LOGGED_IN_PASSWORD_PLACEHOLDER)) {
+            return false;
+        }
+        return true;
+    }
+
+    public List<Book> getListOfBooks() {
+        return listOfBooks;
     }
 
 }

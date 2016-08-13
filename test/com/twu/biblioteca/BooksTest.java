@@ -19,6 +19,18 @@ import static org.mockito.Mockito.when;
  */
 public class BooksTest {
 
+    Accounts accounts;
+    Account loggedInAccount;
+    PrintStream outputStream;
+
+    @Before
+    public void setUp() throws Exception {
+        outputStream = mock(PrintStream.class);
+        accounts = new Accounts(outputStream);
+        loggedInAccount = accounts.getListOfAccounts().get(0);
+    }
+
+
     @Test
     public void shouldDisplayBooks() throws Exception {
         PrintStream outputStream = mock(PrintStream.class);
@@ -37,7 +49,7 @@ public class BooksTest {
     public void shouldNotDisplayBookWhenCheckedOut() throws Exception {
         PrintStream outputStream = mock(PrintStream.class);
         Books books = new Books(outputStream);
-        books.checkOutBook(0);
+        books.checkOutBook(0, loggedInAccount);
         books.displayList();
 
         verify(outputStream).println("Thank you! Enjoy the book");
@@ -50,7 +62,7 @@ public class BooksTest {
     public void shouldDisplaySuccessfulMessageForCheckingOutBook() throws Exception {
         PrintStream outputStream = mock(PrintStream.class);
         Books books = new Books(outputStream);
-        books.checkOutBook(0);
+        books.checkOutBook(0, loggedInAccount);
 
         verify(outputStream).println("Thank you! Enjoy the book");
     }
@@ -59,8 +71,8 @@ public class BooksTest {
     public void shouldDisplayUnsuccessfulMessageForCheckingOutInvalidBook() throws Exception {
         PrintStream outputStream = mock(PrintStream.class);
         Books books = new Books(outputStream);
-        books.checkOutBook(0);
-        books.checkOutBook(0);
+        books.checkOutBook(0, loggedInAccount);
+        books.checkOutBook(0, loggedInAccount);
 
         verify(outputStream).println("That book is not available.");
     }
@@ -69,7 +81,7 @@ public class BooksTest {
     public void shouldDisplayUnsuccessfulMessageForCheckingOutNonExistentBook() throws Exception {
         PrintStream outputStream = mock(PrintStream.class);
         Books books = new Books(outputStream);
-        books.checkOutBook(2);
+        books.checkOutBook(2, loggedInAccount);
 
         verify(outputStream).println("That book is not available.");
     }

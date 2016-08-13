@@ -27,6 +27,7 @@ public class BibliotecaAppTest {
         books = mock(Books.class);
         movies = mock(Movies.class);
         accounts = mock(Accounts.class);
+
         bibliotecaApp = new BibliotecaApp(outputStream, inputStream, books, movies, accounts);
         when(inputStream.ready()).thenReturn(true);
         when(inputStream.readLine()).thenReturn("Q");
@@ -139,7 +140,7 @@ public class BibliotecaAppTest {
     @Test
     public void shouldPerformBookCommandGivenCCommand() throws Exception {
         bibliotecaApp.performBookCommand("C 0");
-        verify(books).checkOutBook(0);
+        verify(books).checkOutBook(0, bibliotecaApp.getLoggedInAccount());
     }
 
     @Test
@@ -240,6 +241,15 @@ public class BibliotecaAppTest {
         verify(outputStream).println("Name: Test User");
         verify(outputStream).println("Email Address: test@test.com");
         verify(outputStream).println("Phone Number: 07777777777");
+    }
+
+    @Test
+    public void shouldNotLetCheckOutBookWithoutLogin() {
+        Account account = new Account(Commands.Login.NOT_LOGGED_IN_LIBRARY_NUMBER_PLACEHOLDER,
+                Commands.Login.NOT_LOGGED_IN_PASSWORD_PLACEHOLDER, "", "", "");
+        Books newBooks = new Books(outputStream);
+        newBooks.checkOutBook(0, account);
+        assertEquals(false, newBooks.getListOfBooks().get(0).getCheckedOut());
     }
 
 }

@@ -10,6 +10,7 @@ public class Book {
     private final String author;
     private final int year;
     private boolean checkedOut;
+    private Account checkedOutBy;
 
     public Book(String title, String author, int year) {
         this.title = title;
@@ -38,4 +39,7 @@ public class Book {
         return checkedOut;
     }
 
+    public void setCheckedOutBy(Account account) {
+        checkedOutBy = account;
+    }
 }

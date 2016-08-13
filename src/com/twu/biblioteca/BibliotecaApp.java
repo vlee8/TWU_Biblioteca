@@ -42,8 +42,7 @@ public class BibliotecaApp {
         outputStream.println("[CM <ID>]: Check Out Movie");
         outputStream.println("[RM <ID>]: Return Movie");
 
-        if (loggedInAccount.getLibraryNumber().equals(Commands.Login.NOT_LOGGED_IN_LIBRARY_NUMBER_PLACEHOLDER) &&
-                loggedInAccount.getPassword().equals(Commands.Login.NOT_LOGGED_IN_PASSWORD_PLACEHOLDER)) {
+        if (!checkIfLoggedIn()) {
             outputStream.println("[LA <LIBRARY NUMBER> <PASSWORD>]: Login To Account");
         } else {
             outputStream.println("Logged in as " + loggedInAccount.getLibraryNumber());
@@ -70,9 +69,13 @@ public class BibliotecaApp {
                 outputStream.println(Commands.MainMenu.MAIN_MENU_INVALID_SELECTION_COMMAND);
             } else if (!checkIfBookCommand(userInput).equals("")) {
                 if (checkIfMovieCommand(userInput).equals("")) {
+
                     performBookCommand(userInput);
+
                 } else {
+
                     performMovieCommand(userInput);
+
                 }
             }
 
@@ -132,7 +135,7 @@ public class BibliotecaApp {
         switch (command)
         {
             case Commands.MainMenu.CHECKOUT_COMMAND:
-                books.checkOutBook(bookID);
+                books.checkOutBook(bookID, loggedInAccount);
                 break;
             case Commands.MainMenu.RETURN_COMMAND:
                 books.returnBook(bookID);
@@ -186,6 +189,18 @@ public class BibliotecaApp {
         outputStream.println("Name: " + loggedInAccount.getName());
         outputStream.println("Email Address: " + loggedInAccount.getEmail());
         outputStream.println("Phone Number: " + loggedInAccount.getPhoneNumber());
+    }
+
+    public boolean checkIfLoggedIn() {
+        if (loggedInAccount.getLibraryNumber().equals(Commands.Login.NOT_LOGGED_IN_LIBRARY_NUMBER_PLACEHOLDER) &&
+                loggedInAccount.getPassword().equals(Commands.Login.NOT_LOGGED_IN_PASSWORD_PLACEHOLDER)) {
+            return false;
+        }
+        return true;
+    }
+
+    public Account getLoggedInAccount() {
+        return loggedInAccount;
     }
 
 }
