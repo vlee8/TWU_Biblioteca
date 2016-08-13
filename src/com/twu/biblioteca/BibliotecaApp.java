@@ -138,7 +138,7 @@ public class BibliotecaApp {
                 books.checkOutBook(bookID, loggedInAccount);
                 break;
             case Commands.MainMenu.RETURN_COMMAND:
-                books.returnBook(bookID);
+                books.returnBook(bookID, loggedInAccount);
                 break;
             default:
                 break;

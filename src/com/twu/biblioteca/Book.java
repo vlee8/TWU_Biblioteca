@@ -39,7 +39,9 @@ public class Book {
         return checkedOut;
     }
 
-    public void setCheckedOutBy(Account account) {
-        checkedOutBy = account;
+    public Account getCheckedOutBy() {
+        return checkedOutBy;
     }
+
+
 }

@@ -47,7 +47,6 @@ public class Books {
             try {
                 if (!listOfBooks.get(bookID).getCheckedOut()) {
                     listOfBooks.get(bookID).setCheckedOut(true);
-                    //listOfBooks.get(bookID).setCheckedOutBy(account);
                     outputStream.println(Commands.BooksCommands.SUCCESSFUL_CHECKOUT_MESSAGE);
                 } else {
                     outputStream.println(Commands.BooksCommands.UNSUCCESSFUL_CHECKOUT_MESSAGE);
@@ -60,18 +59,26 @@ public class Books {
         }
     }
 
-    public void returnBook(int bookID)
+    public void returnBook(int bookID, Account account)
     {
-        try {
-            if (listOfBooks.get(bookID).getCheckedOut()) {
-                listOfBooks.get(bookID).setCheckedOut(false);
-                outputStream.println(Commands.BooksCommands.SUCCESSFUL_RETURN_MESSAGE);
+        if (checkIfLoggedIn(account)) {
+
+            if (!checkIfCanReturn(bookID, account)) {
+                outputStream.println(Commands.Login.RETURN_BOOK_NOT_CHECKED_OUT_BY_ACCOUNT_MESSAGE);
             } else {
-                outputStream.println(Commands.BooksCommands.UNSUCCESSFUL_RETURN_MESSAGE);
+                try {
+                    if (listOfBooks.get(bookID).getCheckedOut()) {
+                        listOfBooks.get(bookID).setCheckedOut(false);
+                        outputStream.println(Commands.BooksCommands.SUCCESSFUL_RETURN_MESSAGE);
+                    } else {
+                        outputStream.println(Commands.BooksCommands.UNSUCCESSFUL_RETURN_MESSAGE);
+                    }
+                } catch (IndexOutOfBoundsException e) {
+                    outputStream.println(Commands.BooksCommands.UNSUCCESSFUL_RETURN_MESSAGE);
+                }
             }
-        }
-        catch (IndexOutOfBoundsException e) {
-            outputStream.println(Commands.BooksCommands.UNSUCCESSFUL_RETURN_MESSAGE);
+        } else {
+            outputStream.println(Commands.Login.REQUIRES_LOG_IN_MESSAGE);
         }
     }
 
@@ -87,4 +94,10 @@ public class Books {
         return listOfBooks;
     }
 
+    public boolean checkIfCanReturn(int bookID, Account account) {
+        if (listOfBooks.get(bookID).getCheckedOutBy().getLibraryNumber().equals(account.getLibraryNumber())) {
+            return true;
+        }
+        return false;
+    }
 }

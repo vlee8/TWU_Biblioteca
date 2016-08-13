@@ -146,7 +146,7 @@ public class BibliotecaAppTest {
     @Test
     public void shouldPerformBookCommandGivenRCommand() throws Exception {
         bibliotecaApp.performBookCommand("R 0");
-        verify(books).returnBook(0);
+        verify(books).returnBook(0, bibliotecaApp.getLoggedInAccount());
     }
 
     @Test
@@ -249,6 +249,15 @@ public class BibliotecaAppTest {
                 Commands.Login.NOT_LOGGED_IN_PASSWORD_PLACEHOLDER, "", "", "");
         Books newBooks = new Books(outputStream);
         newBooks.checkOutBook(0, account);
+        assertEquals(false, newBooks.getListOfBooks().get(0).getCheckedOut());
+    }
+
+    @Test
+    public void shouldNotLetReturnBookWithoutLogin() {
+        Account account = new Account(Commands.Login.NOT_LOGGED_IN_LIBRARY_NUMBER_PLACEHOLDER,
+                Commands.Login.NOT_LOGGED_IN_PASSWORD_PLACEHOLDER, "", "", "");
+        Books newBooks = new Books(outputStream);
+        newBooks.returnBook(0, account);
         assertEquals(false, newBooks.getListOfBooks().get(0).getCheckedOut());
     }
 

@@ -55,6 +55,7 @@ public class Commands {
         public static final String NOT_LOGGED_IN_LIBRARY_NUMBER_PLACEHOLDER = "";
         public static final String NOT_LOGGED_IN_PASSWORD_PLACEHOLDER = "";
         public static final String REQUIRES_LOG_IN_MESSAGE = "Please log in in order to check out or return books.";
+        public static final String RETURN_BOOK_NOT_CHECKED_OUT_BY_ACCOUNT_MESSAGE = "This book hasn't been checked out with this account so you cannot return it.";
     }
 
 }
